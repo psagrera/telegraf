@@ -16,6 +16,7 @@ import (
 	"github.com/influxdata/telegraf/plugins/parsers/nagios"
 	"github.com/influxdata/telegraf/plugins/parsers/value"
 	"github.com/influxdata/telegraf/plugins/parsers/wavefront"
+	"github.com/influxdata/telegraf/plugins/parsers/juniperUDP"
 )
 
 // ParserInput is an interface for input plugins that are able to parse
@@ -192,6 +193,8 @@ func NewParser(config *Config) (Parser, error) {
 			config.DefaultTags)
 	case "logfmt":
 		parser, err = NewLogFmtParser(config.MetricName, config.DefaultTags)
+	case "juniperUDP":
+		parser, err =  NewJuniperUDPParser()
 	default:
 		err = fmt.Errorf("Invalid data format: %s", config.DataFormat)
 	}
@@ -378,3 +381,7 @@ func NewLogFmtParser(metricName string, defaultTags map[string]string) (Parser, 
 func NewWavefrontParser(defaultTags map[string]string) (Parser, error) {
 	return wavefront.NewWavefrontParser(defaultTags), nil
 }
+func NewJuniperUDPParser()(Parser, error){
+	return &juniperUDP.JuniperUDPParser{}, nil
+}
+
